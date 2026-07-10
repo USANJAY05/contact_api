@@ -4,7 +4,7 @@
 
 ### Format
 
-`<type>/<ticket-id>-<short-description>`
+`<type>/<short-description>`
 
 ### Allowed Types
 
@@ -18,20 +18,21 @@
 
 ### Rules
 
-* Use lowercase letters for branch type and description.
+* Use lowercase letters.
 * Separate words with hyphens (`-`).
-* Include the ticket/story ID whenever available.
 * Keep the description short and meaningful.
 * One branch should address one feature, fix, or task.
+* Avoid generic names such as `update`, `changes`, or `fixes`.
 
 ### Examples
 
-* `feature/abc-123-add-user-profile`
-* `feature/abc-456-payment-status-api`
-* `bugfix/abc-789-fix-login-validation`
-* `refactor/abc-101-cleanup-auth-service`
-* `chore/abc-102-update-dependencies`
-* `docs/abc-103-update-api-guide`
+* `feature/add-user-profile`
+* `feature/payment-status-api`
+* `bugfix/fix-login-validation`
+* `hotfix/fix-production-auth-issue`
+* `refactor/cleanup-auth-service`
+* `chore/update-dependencies`
+* `docs/update-api-guide`
 
 ---
 
@@ -39,7 +40,7 @@
 
 ### Format
 
-`<type>(<ticket-id>): <description>`
+`<type>: <description>`
 
 ### Allowed Types
 
@@ -59,16 +60,16 @@
 * Write descriptions in the imperative mood.
 * Keep commit messages concise and meaningful.
 * One commit should represent one logical change.
-* Include the ticket/story ID whenever available.
+* Avoid vague commit messages.
 
 ### Examples
 
-* `feat(ABC-123): add user profile page`
-* `fix(ABC-456): handle null response from API`
-* `refactor(ABC-789): simplify authentication service`
-* `docs(ABC-101): update onboarding guide`
-* `test(ABC-102): add payment service unit tests`
-* `chore(ABC-103): upgrade spring boot version`
+* `feat: add user profile page`
+* `fix: handle null response from api`
+* `refactor: simplify authentication service`
+* `docs: update onboarding guide`
+* `test: add payment service unit tests`
+* `chore: upgrade spring boot version`
 
 ### Avoid
 
@@ -96,7 +97,6 @@
 ### Pull Requests
 
 * PR title should clearly describe the change.
-* Link the associated ticket/story.
 * Keep PRs focused on a single objective.
 * Ensure all tests and quality checks pass before requesting review.
 * Obtain at least one approval before merging.
@@ -104,4 +104,6 @@
 ### Merging
 
 * Prefer **Squash and Merge** to maintain a clean commit history.
+* Multiple commits during development are allowed.
+* The final merged commit should clearly describe the completed change.
 * Delete merged branches after successful deployment.
