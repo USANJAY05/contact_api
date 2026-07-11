@@ -1,6 +1,6 @@
 from fastapi import APIRouter
-from fastapi import Request
-from src.schema.contact import CreateContactRequest, CreateContactResponse
+from src.schema.contact.request_schema import CreateContactRequest
+from src.schema.contact.response_schema import CreateContactResponse
 from src.services.contact.create_contact import create_contact_service
 
 route = APIRouter(

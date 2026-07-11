@@ -1,26 +1,8 @@
 from pydantic import BaseModel, EmailStr
 from typing import Optional
+from src.schema.contact.components import WorkInfo, Address, Website, ImportantDate
 
 
-class WorkInfo(BaseModel):
-    job_name: str
-    department: str
-    company: str
-
-class Address(BaseModel):
-    street: str
-    city: str
-    state: str
-    pincode: str
-    country: str
-
-class Website(BaseModel):
-    name: str
-    link: str
-
-class ImportantDate(BaseModel):
-    name: str
-    date: str
 
 class CreateContactRequest(BaseModel):
     first_name: str
@@ -35,11 +17,3 @@ class CreateContactRequest(BaseModel):
     websites: Optional[Website]=None
     important_dates: Optional[ImportantDate]=None
 
-
-
-
-
-class CreateContactResponse(BaseModel):
-    success: bool
-    message: str
-    data: dict
