@@ -2,7 +2,7 @@ from src.core.db import session_local
 from src.models.contact import Contact
 from src.models.email import Email
 from src.models.phone import Phone
-
+from src.models.group import Group
 
 def create_contact_service(data):
     try:
@@ -30,7 +30,6 @@ def create_contact_service(data):
             ]
 
             session.add_all(new_emails)
-            session.commit()
 
 
 
@@ -44,7 +43,17 @@ def create_contact_service(data):
             ]
 
             session.add_all(new_phones)
-            session.commit()
+            print("grooooouup")
+            print(data)
+
+            group_data={
+                "name":payload.get("name")
+            }
+            new_group=Group(**group_data)
+            session.add(new_group)
+            session.commit
+
+            
 
             return new_contact
 
