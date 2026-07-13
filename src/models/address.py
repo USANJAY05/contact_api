@@ -10,4 +10,4 @@ class Address(Base):
     state=Column(String(100))
     pincode=Column(Integer)
     country=Column(String(100))
-    contact_id=Column(Integer,ForeignKey("contact.id"),nullable=False)
+    contact_id=Column(Integer,ForeignKey("contact.id",ondelete="CASCADE"),nullable=False)

@@ -14,4 +14,4 @@ def get_group_service():
             }
 
     except Exception as e:
-        raise Exception(f"Failed to get groups: {e}")
+        raise Exception(f"Failed to get groups: {e}") 

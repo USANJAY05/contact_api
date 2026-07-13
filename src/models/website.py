@@ -8,4 +8,4 @@ class Website(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String(100), nullable=True)
     link = Column(String(500), nullable=False)
-    contact_id = Column(Integer, ForeignKey("contact.id"), nullable=False)
+    contact_id = Column(Integer, ForeignKey("contact.id",ondelete="CASCADE"), nullable=False)

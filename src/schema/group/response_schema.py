@@ -1,8 +1,8 @@
 from pydantic import BaseModel
 
 class CreateGroupResponse(BaseModel):
-    id: int
-    name: str
+    success: bool
+    message: str
 
 
 class GroupData(BaseModel):

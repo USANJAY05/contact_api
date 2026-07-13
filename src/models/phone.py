@@ -7,4 +7,4 @@ class Phone(Base):
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     number = Column(String(20), nullable=False)
-    contact_id = Column(Integer, ForeignKey("contact.id"), nullable=False)
+    contact_id = Column(Integer, ForeignKey("contact.id",ondelete="CASCADE"), nullable=False)

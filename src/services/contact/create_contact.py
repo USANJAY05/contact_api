@@ -1,61 +1,115 @@
+from fastapi import HTTPException
+
 from src.core.db import session_local
 from src.models.contact import Contact
 from src.models.email import Email
 from src.models.phone import Phone
-from src.models.group import Group
+
 
 def create_contact_service(data):
     try:
         with session_local() as session:
+
             payload = data.model_dump()
 
-            contact_data = {
-                "first_name": payload["first_name"],
-                "last_name": payload["last_name"],
-                "relationship": payload["relationship"],
-                "notes": payload["notes"],
-            }
+            # -----------------------------
+            # Check for duplicate emails
+            # -----------------------------
+            if payload.get("emails"):
+                for email in payload["emails"]:
+                    existing_email = (
+                        session.query(Email)
+                        .filter(Email.email == email)
+                        .first()
+                    )
 
-            new_contact = Contact(**contact_data)
+                    if existing_email:
+                        raise HTTPException(
+                            status_code=409,
+                            detail={
+                                "success": False,
+                                "message": f"Email '{email}' already exists"
+                            }
+                        )
+
+            # -----------------------------
+            # Check for duplicate phone numbers
+            # -----------------------------
+            if payload.get("phones"):
+                for phone in payload["phones"]:
+                    existing_phone = (
+                        session.query(Phone)
+                        .filter(Phone.number == phone)
+                        .first()
+                    )
+
+                    if existing_phone:
+                        raise HTTPException(
+                            status_code=409,
+                            detail={
+                                "success": False,
+                                "message": f"Phone number '{phone}' already exists"
+                            }
+                        )
+
+            # -----------------------------
+            # Create Contact
+            # -----------------------------
+            new_contact = Contact(
+                first_name=payload["first_name"],
+                last_name=payload.get("last_name"),
+                relationship=payload.get("relationship"),
+                notes=payload.get("notes")
+            )
 
             session.add(new_contact)
-            session.flush()  # populates new_contact.id
+            session.flush()
 
-            new_emails = [
-                Email(
-                    contact_id=new_contact.id,
-                    email=email_address
-                )
-                for email_address in payload["emails"]
-            ]
+            # -----------------------------
+            # Create Emails
+            # -----------------------------
+            if payload.get("emails"):
+                emails = [
+                    Email(
+                        contact_id=new_contact.id,
+                        email=email
+                    )
+                    for email in payload["emails"]
+                ]
+                session.add_all(emails)
 
-            session.add_all(new_emails)
+            # -----------------------------
+            # Create Phones
+            # -----------------------------
+            if payload.get("phones"):
+                phones = [
+                    Phone(
+                        contact_id=new_contact.id,
+                        number=phone
+                    )
+                    for phone in payload["phones"]
+                ]
+                session.add_all(phones)
 
+            session.commit()
+            session.refresh(new_contact)
 
-
-
-            new_phones = [
-                Phone(
-                    contact_id=new_contact.id,
-                    number=phone_number
-                )
-                for phone_number in payload["phones"]
-            ]
-
-            session.add_all(new_phones)
-            print("grooooouup")
-            print(data)
-
-            group_data={
-                "name":payload.get("name")
+            return {
+                "success": True,
+                "message": "Contact created successfully",
+                "data": {
+                    "contact_id": new_contact.id
+                }
             }
-            new_group=Group(**group_data)
-            session.add(new_group)
-            session.commit
 
-            
-
-            return new_contact
+    except HTTPException:
+        raise
 
     except Exception as e:
-        raise Exception(f"Failed to create contact: {e}")
+        raise HTTPException(
+            status_code=500,
+            detail={
+                "success": False,
+                "message": f"Failed to create contact: {str(e)}"
+            }
+        )

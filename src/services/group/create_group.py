@@ -14,11 +14,14 @@ def create_group_service(data):
             session.refresh(new_group)
             print(new_group.id)
             print(new_group)
+            return{
+                "success":True,
+                "message":"Group created successfully"
+            }
 
-            return new_group
 
     except IntegrityError as e:
-        raise HTTPException(status_code=400, detail="Calendar already exists")
+        raise HTTPException(status_code=400, detail="Group already exists")
 
 
     
