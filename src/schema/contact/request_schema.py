@@ -17,3 +17,10 @@ class CreateContactRequest(BaseModel):
     websites: Optional[list[Website]]=None
     important_dates: Optional[list[ImportantDate]]=None
 
+
+class SearchQuery(BaseModel):
+    page: Optional[int]=1
+    limit: Optional[int]=10
+    name: Optional[str]=None
+    phone: Optional[str]=None
+    email: Optional[str]=None

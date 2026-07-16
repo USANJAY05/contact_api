@@ -1,5 +1,6 @@
 from fastapi import APIRouter
 from fastapi import Query
+from typing import Annotated
 
 from src.schema.contact.request_schema import CreateContactRequest
 from src.schema.contact.response_schema import CreateContactResponse
@@ -16,6 +17,8 @@ from src.services.contact.update_contact import update_contact_service
 from src.schema.contact.response_schema import UpdateContactResponse
 from src.services.contact.delete_contact import delete_contact_service
 from src.schema.contact.response_schema import DeleteContactResponse
+from src.services.contact.search_contact import search_contact_service
+from src.schema.contact.request_schema import SearchQuery
 
 
 
@@ -38,6 +41,12 @@ def get_contacts(
 ):
     return get_contact_service(page, limit,user_id)
 
+@route.get("/search")
+def search_contact(
+    query: Annotated[SearchQuery, Query()]
+):
+    return search_contact_service(query, user_id)
+
 
 @route.get("/{contact_id}", response_model=GetContactByIdResponse)
 def get_contact_by_id(contact_id: int):
@@ -52,8 +61,3 @@ def update_contact(contact_id: int, data: CreateContactRequest):
 @route.delete("/{contact_id}", response_model=DeleteContactResponse)
 def delete_contact(contact_id: int):
     return delete_contact_service(contact_id, user_id)
-
-
-@route.get("/search")
-def search_contact(data: CreateContactRequest):
-    return data
