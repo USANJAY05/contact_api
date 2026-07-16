@@ -23,7 +23,7 @@ route = APIRouter(
     prefix="/contacts",
     tags=['CONTACT']
 )
-user_id=1
+user_id=2
 
 @route.post("/", response_model=CreateContactResponse, status_code=201)
 def create_contact(data: CreateContactRequest):

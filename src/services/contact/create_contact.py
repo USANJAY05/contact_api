@@ -21,42 +21,42 @@ def create_contact_service(data,user_id):
             # -----------------------------
             # Check for duplicate emails
             # -----------------------------
-            if payload.get("emails"):
-                for email in payload["emails"]:
-                    existing_email = (
-                        session.query(Email)
-                        .filter(Email.email == email)
-                        .first()
-                    )
+            # if payload.get("emails"):
+            #     for email in payload["emails"]:
+            #         existing_email = (
+            #             session.query(Email)
+            #             .filter(Email.email == email)
+            #             .first()
+            #         )
 
-                    if existing_email:
-                        raise HTTPException(
-                            status_code=409,
-                            detail={
-                                "success": False,
-                                "message": f"Email '{email}' already exists"
-                            }
-                        )
+            #         if existing_email:
+            #             raise HTTPException(
+            #                 status_code=409,
+            #                 detail={
+            #                     "success": False,
+            #                     "message": f"Email '{email}' already exists"
+            #                 }
+            #             )
 
             # -----------------------------
             # Check for Phone     
             # -----------------------------
-            if payload.get("phones"):
-                for phone in payload["phones"]:
-                    existing_phone = (
-                        session.query(Phone)
-                        .filter(Phone.number == phone)
-                        .first()
-                    )
+            # if payload.get("phones"):
+            #     for phone in payload["phones"]:
+            #         existing_phone = (
+            #             session.query(Phone)
+            #             .filter(Phone.number == phone)
+            #             .first()
+            #         )
 
-                    if existing_phone:
-                        raise HTTPException(
-                            status_code=409,
-                            detail={
-                                "success": False,
-                                "message": f"Phone number '{phone}' already exists"
-                            }
-                        )
+            #         if existing_phone:
+            #             raise HTTPException(
+            #                 status_code=409,
+            #                 detail={
+            #                     "success": False,
+            #                     "message": f"Phone number '{phone}' already exists"
+            #                 }
+            #             )
 
             # -----------------------------
             # Check for group_id exist or not     

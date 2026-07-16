@@ -6,14 +6,14 @@ from src.models.contact import Contact
 from src.schema.contact.request_schema import CreateContactRequest
 
 
-def update_contact_service(contact_id: int, data: CreateContactRequest):
+def update_contact_service(contact_id: int, data: CreateContactRequest, user_id):
 
     try:
         with session_local() as session:
 
             contact = (
                 session.query(Contact)
-                .filter(Contact.id == contact_id)
+                .filter(Contact.id == contact_id, Contact.user_id==user_id)
                 .first()
             )
 

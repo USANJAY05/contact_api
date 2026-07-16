@@ -6,14 +6,14 @@ from src.models.email import Email
 from src.models.phone import Phone
 
 
-def get_contact_by_id_service(contact_id: int):
+def get_contact_by_id_service(contact_id: int, user_id):
 
     try:
         with session_local() as session:
 
             contact = (
                 session.query(Contact)
-                .filter(Contact.id == contact_id)
+                .filter(Contact.id == contact_id, Contact.user_id==user_id)
                 .first()
             )
 
