@@ -13,7 +13,7 @@ class CreateContactRequest(BaseModel):
     phones: list[str]
     group_ids: Optional[list[int]]=None
     work_info: Optional[WorkInfo]=None
-    addresses: Optional[Address]=None
-    websites: Optional[Website]=None
-    important_dates: Optional[ImportantDate]=None
+    addresses: Optional[list[Address]]=None
+    websites: Optional[list[Website]]=None
+    important_dates: Optional[list[ImportantDate]]=None
 

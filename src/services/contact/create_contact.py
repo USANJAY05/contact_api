@@ -4,9 +4,15 @@ from src.core.db import session_local
 from src.models.contact import Contact
 from src.models.email import Email
 from src.models.phone import Phone
+from src.models.address import Address
+from src.models.important_dates import ImportantDates
+from src.models.website import Website
+from src.models.work_info import WorkInfo
+from src.models.contact_group import ContactGroup
+from src.models.group import Group
 
 
-def create_contact_service(data):
+def create_contact_service(data,user_id):
     try:
         with session_local() as session:
 
@@ -33,7 +39,7 @@ def create_contact_service(data):
                         )
 
             # -----------------------------
-            # Check for duplicate phone numbers
+            # Check for Phone     
             # -----------------------------
             if payload.get("phones"):
                 for phone in payload["phones"]:
@@ -53,9 +59,32 @@ def create_contact_service(data):
                         )
 
             # -----------------------------
+            # Check for group_id exist or not     
+            # -----------------------------
+            if payload.get("group_ids"):
+                for group_id in payload["group_ids"]:
+                    existing_group_id = (
+                        session.query(Group)
+                        .filter(Group.id == group_id)
+                        .first()
+                    )
+
+                    if not existing_group_id:
+                        raise HTTPException(
+                            status_code=409,
+                            detail={
+                                "success": False,
+                                "message": f"Group id '{group_id}' not exists"
+                            }
+                        )
+
+
+
+            # -----------------------------
             # Create Contact
             # -----------------------------
             new_contact = Contact(
+                user_id=user_id,
                 first_name=payload["first_name"],
                 last_name=payload.get("last_name"),
                 relationship=payload.get("relationship"),
@@ -90,6 +119,77 @@ def create_contact_service(data):
                     for phone in payload["phones"]
                 ]
                 session.add_all(phones)
+
+
+            # -----------------------------
+            # Create Group
+            # -----------------------------
+            if payload.get("group_ids"):
+                group_ids = [
+                    ContactGroup(
+                        contact_id=new_contact.id,
+                        group_id=group_id
+                    )
+                    for group_id in payload["group_ids"]
+                ]
+                print(group_ids)
+                session.add_all(group_ids)
+
+
+            # -----------------------------
+            # Create Work Info
+            # -----------------------------
+            if payload.get("work_info"):
+                work_data = payload.get("work_info")
+                print(work_data)
+                work_info=WorkInfo(
+                    **work_data,
+                    contact_id=new_contact.id
+                )
+                session.add(work_info)
+
+
+            # -----------------------------
+            # Create Address
+            # -----------------------------
+            if payload.get("addresses"):
+                address_info=[
+                    Address(
+                        **address_data,
+                        contact_id=new_contact.id
+                    )
+                    for address_data in payload["addresses"]
+                ]
+                session.add_all(address_info)
+
+
+            # -----------------------------
+            # Create Website
+            # -----------------------------
+            if payload.get("websites"):
+                Website_info=[
+                    Website(
+                        **Website_data,
+                        contact_id=new_contact.id
+                    )
+                    for Website_data in payload["websites"]
+                ]
+                session.add_all(Website_info)
+
+
+            # -----------------------------
+            # Create important dates
+            # -----------------------------
+            if payload.get("important_dates"):
+                important_dates_info=[
+                    ImportantDates(
+                        **important_dates_data,
+                        contact_id=new_contact.id
+                    )
+                    for important_dates_data in payload["important_dates"]
+                ]
+                session.add_all(important_dates_info)
+
 
             session.commit()
             session.refresh(new_contact)

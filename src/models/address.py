@@ -5,6 +5,7 @@ from sqlalchemy import Integer, Column, String, ForeignKey
 class Address(Base):
     __tablename__="address"
     id=Column(Integer,primary_key=True,autoincrement=True)
+    category=Column(String(100),nullable=False,default="Home")
     street=Column(String(100))
     city=Column(String(100))
     state=Column(String(100))

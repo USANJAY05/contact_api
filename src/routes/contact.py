@@ -23,10 +23,11 @@ route = APIRouter(
     prefix="/contacts",
     tags=['CONTACT']
 )
+user_id=1
 
 @route.post("/", response_model=CreateContactResponse, status_code=201)
 def create_contact(data: CreateContactRequest):
-    return create_contact_service(data)
+    return create_contact_service(data,user_id)
 
 
 
@@ -35,22 +36,22 @@ def get_contacts(
     page: int = Query(1, ge=1),
     limit: int = Query(10, ge=1)
 ):
-    return get_contact_service(page, limit)
+    return get_contact_service(page, limit,user_id)
 
 
 @route.get("/{contact_id}", response_model=GetContactByIdResponse)
 def get_contact_by_id(contact_id: int):
-    return get_contact_by_id_service(contact_id)
+    return get_contact_by_id_service(contact_id,user_id)
 
 
 @route.put("/{contact_id}", response_model=UpdateContactResponse)
 def update_contact(contact_id: int, data: CreateContactRequest):
-    return update_contact_service(contact_id, data)
+    return update_contact_service(contact_id, data,user_id)
 
 
 @route.delete("/{contact_id}", response_model=DeleteContactResponse)
 def delete_contact(contact_id: int):
-    return delete_contact_service(contact_id)
+    return delete_contact_service(contact_id, user_id)
 
 
 @route.get("/search")

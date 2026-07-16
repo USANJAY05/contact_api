@@ -14,26 +14,26 @@ route = APIRouter(
     prefix="/groups",
     tags=['GROUP']
 )
-
+user_id=1
 @route.post("/",response_model=CreateGroupResponse)
 def create_group(data: CreateGroupRequest):
-    return create_group_service(data)
+    return create_group_service(data,user_id)
 
 
 @route.get("/", response_model=GetAllGroupResponse)
 def get_group():
-    return get_group_service()
+    return get_group_service(user_id)
 
 
 @route.put("/{group_id}", response_model=DeleteGroupResponse)
 def update_group(group_id: int, data: CreateGroupRequest):
-    return update_group_service(group_id, data)
+    return update_group_service(group_id, data,user_id)
 
 
 
 @route.delete("/{group_id}", response_model=DeleteGroupResponse)
 def delete_group(group_id: int):
-    return delete_group_service(group_id)
+    return delete_group_service(group_id,user_id)
 
 
 

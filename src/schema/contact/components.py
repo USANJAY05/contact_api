@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+from datetime import date
 
 class WorkInfo(BaseModel):
     job_name: str
@@ -6,10 +7,11 @@ class WorkInfo(BaseModel):
     company: str
 
 class Address(BaseModel):
+    category: str
     street: str
     city: str
     state: str
-    pincode: str
+    pincode: int
     country: str
 
 class Website(BaseModel):
@@ -18,4 +20,4 @@ class Website(BaseModel):
 
 class ImportantDate(BaseModel):
     name: str
-    date: str
+    date: date

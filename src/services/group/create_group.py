@@ -3,10 +3,13 @@ from src.models.group import Group
 from sqlalchemy.exc import IntegrityError
 from fastapi.exceptions import HTTPException
 
-def create_group_service(data):
+def create_group_service(data,user_id):
     try:
         with session_local() as session:
-            new_group = Group(**data.model_dump())
+            new_group = Group(
+                **data.model_dump(),
+                user_id=user_id
+                )
 
             session.add(new_group)
             # session.flush() 
