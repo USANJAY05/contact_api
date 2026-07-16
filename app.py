@@ -3,6 +3,8 @@ from src.routes.contact import route as contact_route
 from src.core.db import engine, Base
 from contextlib import asynccontextmanager
 from src.routes.group import route as group_route
+from fastapi.middleware.cors import CORSMiddleware
+
 
 
 @asynccontextmanager
@@ -16,6 +18,16 @@ app = FastAPI(title="Contact API", lifespan=lifespan)
 
 app.include_router(contact_route)
 app.include_router(group_route)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "http://127.0.0.1:5500",
+        "http://localhost:5500",
+    ],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 @app.get("/")
