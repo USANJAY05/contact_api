@@ -4,12 +4,12 @@ from src.models.group import Group
 from src.schema.group.request_schema import CreateGroupRequest
 
 
-def update_group_service(group_id: int, data: CreateGroupRequest):
+def update_group_service(group_id: int, data: CreateGroupRequest, user_id):
     try:
         with session_local() as session:
 
             # Find the group by ID
-            group = session.query(Group).filter(Group.id == group_id).first()
+            group = session.query(Group).filter(Group.id == group_id, Group.user_id==user_id).first()
 
             # Check if group exists
             if not group:

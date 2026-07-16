@@ -2,11 +2,11 @@ from src.core.db import session_local
 from src.models.group import Group
 
 
-def get_group_service():
+def get_group_service(user_id):
     try:
         with session_local() as session:
 
-            groups = session.query(Group).all()
+            groups = session.query(Group).filter(Group.user_id==user_id).all()
 
             return {
                 "success": True,
